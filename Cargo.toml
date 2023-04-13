@@ -1,5 +1,5 @@
 [package]
-name = "hypr-smartws"
+name = "hyprland-smartws"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,4 +7,9 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.68"
-hyprland = "0.3.0"
+hyprland = "0.3.1"
+
+[profile.release]
+opt-level = "z"
+strip = true
+lto = true

@@ -11,34 +11,34 @@ fn main() -> Result<()> {
     }
     let id = args[1].parse::<i32>()?;
     let monitors = Monitors::get()?;
-    let mut other = u8::MAX;
-    let mut current = u8::MAX;
+    let mut other = i16::MAX;
+    let mut current = i16::MAX;
     for monitor in monitors {
         if monitor.focused {
             if monitor.active_workspace.id == id {
                 return Ok(());
             }
-            current = monitor.id
+            current = monitor.id;
         }
         if monitor.active_workspace.id == id {
             other = monitor.id;
         }
     }
-    if current == u8::MAX {
+    if current == i16::MAX {
         return Ok(());
     }
-    if other == u8::MAX {
+    if other == i16::MAX {
         Dispatch::call(DispatchType::MoveWorkspaceToMonitor(
             WorkspaceIdentifier::Id(id),
-            MonitorIdentifier::Id(current),
+            MonitorIdentifier::Id(current as u8),
         ))?;
         Dispatch::call(DispatchType::Workspace(WorkspaceIdentifierWithSpecial::Id(
             id,
         )))?;
     } else {
         Dispatch::call(DispatchType::SwapActiveWorkspaces(
-            MonitorIdentifier::Id(current),
-            MonitorIdentifier::Id(other),
+            MonitorIdentifier::Id(current as u8),
+            MonitorIdentifier::Id(other as u8),
         ))?;
     }
     Ok(())
